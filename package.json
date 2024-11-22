@@ -9,15 +9,19 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@ai-sdk/react": "^1.0.2",
+    "@tanstack/react-virtual": "^3.10.9",
     "idb": "^8.0.0",
     "next": "15.0.3",
-    "react": "19.0.0-rc-66855b96-20241106",
-    "react-dom": "19.0.0-rc-66855b96-20241106"
+    "react": "18",
+    "react-dom": "18",
+    "react-syntax-highlighter": "^15.6.1"
   },
   "devDependencies": {
     "@types/node": "^20",
     "@types/react": "^18",
     "@types/react-dom": "^18",
+    "@types/react-syntax-highlighter": "^15.5.13",
     "eslint": "^8",
     "eslint-config-next": "15.0.3",
     "postcss": "^8",
