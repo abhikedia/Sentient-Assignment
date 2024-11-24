@@ -1,13 +1,16 @@
 "use client";
 
-import { createContext, useState, useCallback, useRef, useEffect } from "react";
-import { useModel } from "@/hooks/useModelConfig";
 import {
-  addMessage,
-  getAllMessages,
-  clearAllMessages,
-} from "@/utils/stream";
-import { useChat } from "@ai-sdk/react";
+  createContext,
+  useState,
+  useCallback,
+  useRef,
+  useEffect,
+  ReactNode,
+} from "react";
+import { useModel } from "@/hooks/useModelConfig";
+import { addMessage, getAllMessages, clearAllMessages } from "@/utils/stream";
+import { useChat, Message as AIMessage } from "@ai-sdk/react";
 
 type Message = {
   role: "user" | "assistant";
@@ -31,9 +34,8 @@ type StreamContextType = {
 
 export const StreamContext = createContext<StreamContextType | null>(null);
 
-export function StreamProvider({ children }: { children: React.ReactNode }) {
+export function StreamProvider({ children }: { children: ReactNode }) {
   const [messages, setMessages] = useState<Message[]>([]);
-  const [isStreaming, setIsStreaming] = useState(false);
   const [metrics, setMetrics] = useState<Metrics>({
     tokensPerSecond: 0,
     totalTokens: 0,
@@ -52,9 +54,6 @@ export function StreamProvider({ children }: { children: React.ReactNode }) {
     isLoading,
   } = useChat({
     api: "/api/chat",
-    onFinish: () => {
-      setIsStreaming(false);
-    },
   });
 
   useEffect(() => {
@@ -66,7 +65,7 @@ export function StreamProvider({ children }: { children: React.ReactNode }) {
   }, []);
 
   useEffect(() => {
-    setMessages(aiMessages);
+    setMessages(aiMessages as Message[]);
   }, [aiMessages]);
 
   const sendMessage = useCallback(
@@ -74,7 +73,6 @@ export function StreamProvider({ children }: { children: React.ReactNode }) {
       const userMessage = { role: "user" as const, content: message };
       await addMessage(userMessage);
 
-      setIsStreaming(true);
       streamStart.current = Date.now();
       tokenCount.current = 0;
 
@@ -82,12 +80,10 @@ export function StreamProvider({ children }: { children: React.ReactNode }) {
         {
           role: "user",
           content: message,
-        },
+        } as AIMessage,
         {
-          options: {
-            body: {
-              ...config,
-            },
+          data: {
+            ...config,
           },
         }
       );
@@ -97,7 +93,6 @@ export function StreamProvider({ children }: { children: React.ReactNode }) {
 
   const cancelGeneration = useCallback(() => {
     stop();
-    setIsStreaming(false);
   }, [stop]);
 
   const clearConversation = useCallback(async () => {
@@ -109,12 +104,12 @@ export function StreamProvider({ children }: { children: React.ReactNode }) {
     if (isLoading) {
       const interval = setInterval(() => {
         const elapsedTime = (Date.now() - streamStart.current) / 1000;
-        tokenCount.current += 1; // Rough estimate, you might want to implement a more accurate token counting method
+        tokenCount.current += 1;
         setMetrics({
           tokensPerSecond: tokenCount.current / elapsedTime,
           totalTokens: tokenCount.current,
           estimatedCompletionTime:
-            elapsedTime * (1 - tokenCount.current / (tokenCount.current + 50)), // Rough estimate
+            elapsedTime * (1 - tokenCount.current / (tokenCount.current + 50)),
         });
       }, 100);
 

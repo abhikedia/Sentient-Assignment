@@ -1,8 +1,9 @@
-'use client';
+"use client";
 
 import { useStream } from "@/hooks/useStream";
 import { useState } from "react";
 import { MessageWindow } from "./messageWindow";
+import ModelControlCenter from "../controls";
 
 const PlaygroundContent = () => {
   const [input, setInput] = useState("");
@@ -40,7 +41,7 @@ const PlaygroundContent = () => {
           </button>
         </div>
       </div>
-      {/* <ModelControlCenter /> */}
+      <ModelControlCenter />
     </div>
   );
 };
