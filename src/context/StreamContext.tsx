@@ -97,6 +97,7 @@ export function StreamProvider({ children }: { children: ReactNode }) {
 
   const clearConversation = useCallback(async () => {
     await clearAllMessages();
+    setMessages([]);
     reload();
   }, [reload]);
 

@@ -2,7 +2,8 @@
 
 import { useStream } from "@/hooks/useStream";
 import { useState } from "react";
-import { MessageWindow } from "./messageWindow";
+import { MessageWindow } from "../messages";
+import { Button } from "@/components/ui/button";
 import ModelControlCenter from "../controls";
 
 const PlaygroundContent = () => {
@@ -16,6 +17,11 @@ const PlaygroundContent = () => {
     }
   };
 
+  const handleClearConversation = () => {
+    clearConversation();
+    setInput("");
+  };
+
   return (
     <div className="flex h-screen">
       <div className="flex-1 flex flex-col">
@@ -25,7 +31,14 @@ const PlaygroundContent = () => {
             totalTokens={metrics.totalTokens}
             estimatedCompletionTime={metrics.estimatedCompletionTime}
           /> */}
-          <button onClick={clearConversation}>Clear Conversation</button>
+          <Button
+            onClick={handleClearConversation}
+            variant="outline"
+            className="mr-2"
+            disabled={isStreaming}
+          >
+            Clear Conversation
+          </Button>
         </div>
         <MessageWindow />
         <div className="p-4 border-t">
@@ -36,9 +49,9 @@ const PlaygroundContent = () => {
             placeholder="Enter your message here..."
             disabled={isStreaming}
           />
-          <button className="mt-2" onClick={handleSend} disabled={isStreaming}>
+          <Button className="mt-2" onClick={handleSend} disabled={isStreaming}>
             {isStreaming ? "Generating..." : "Send"}
-          </button>
+          </Button>
         </div>
       </div>
       <ModelControlCenter />

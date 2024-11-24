@@ -4,6 +4,7 @@ import { useEffect, useRef } from "react";
 import { useStream } from "@/hooks/useStream";
 import { useVirtualizer } from "@tanstack/react-virtual";
 import { CodeBlock } from "./codeBlock";
+import { cn } from "@/lib/utils";
 
 export function MessageWindow() {
   const { messages, isStreaming } = useStream();
@@ -12,16 +13,18 @@ export function MessageWindow() {
   const rowVirtualizer = useVirtualizer({
     count: messages.length,
     getScrollElement: () => containerRef.current,
-    estimateSize: () => 50,
+    estimateSize: () => 100,
     overscan: 5,
   });
 
   useEffect(() => {
-    rowVirtualizer.scrollToIndex(messages.length - 1);
-  }, [messages.length, rowVirtualizer]);
+    if (containerRef.current) {
+      containerRef.current.scrollTop = containerRef.current.scrollHeight;
+    }
+  }, [messages]);
 
   return (
-    <div ref={containerRef} className="flex-1 overflow-auto">
+    <div ref={containerRef} className="flex-1 overflow-auto p-4 space-y-4">
       <div
         style={{
           height: `${rowVirtualizer.getTotalSize()}px`,
@@ -46,7 +49,9 @@ export function MessageWindow() {
         ))}
       </div>
       {isStreaming && (
-        <div className="p-2 text-gray-500">AI is generating a response...</div>
+        <div className="text-sm text-gray-500 animate-pulse">
+          AI is typing...
+        </div>
       )}
     </div>
   );
@@ -55,19 +60,25 @@ export function MessageWindow() {
 function Message({ message }: { message: { role: string; content: string } }) {
   return (
     <div
-      className={`p-2 ${message.role === "user" ? "bg-gray-100" : "bg-white"}`}
+      className={cn(
+        "p-4 rounded-lg",
+        message.role === "user" ? "bg-blue-100 ml-auto" : "bg-gray-100 mr-auto",
+        "max-w-[80%]"
+      )}
     >
-      <strong>{message.role === "user" ? "You:" : "AI:"}</strong>
-      <div className="mt-1">
-        {message.content
-          .split("```")
-          .map((part, index) =>
-            index % 2 === 0 ? (
-              <p key={index}>{part}</p>
-            ) : (
-              <CodeBlock key={index} code={part} />
-            )
-          )}
+      <div className="font-semibold mb-2">
+        {message.role === "user" ? "You" : "AI"}
+      </div>
+      <div className="space-y-2">
+        {message.content.split("```").map((part, index) =>
+          index % 2 === 0 ? (
+            <p key={index} className="text-sm">
+              {part}
+            </p>
+          ) : (
+            <CodeBlock key={index} code={part} />
+          )
+        )}
       </div>
     </div>
   );
