@@ -26,11 +26,6 @@ const PlaygroundContent = () => {
     <div className="flex h-screen">
       <div className="flex-1 flex flex-col">
         <div className="flex justify-between items-center p-4">
-          {/* <Metrics 
-            tokensPerSecond={metrics.tokensPerSecond}
-            totalTokens={metrics.totalTokens}
-            estimatedCompletionTime={metrics.estimatedCompletionTime}
-          /> */}
           <Button
             onClick={handleClearConversation}
             variant="outline"
