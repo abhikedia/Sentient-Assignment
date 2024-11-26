@@ -6,44 +6,53 @@ const ModelControlCenter = () => {
   const { config, updateConfig } = useModel();
 
   return (
-    <div className="w-64 p-4 border-l">
-      <h2 className="text-lg font-bold mb-4">Model Controls</h2>
-      <div className="space-y-4">
-        <div>
-          <label className="block text-sm font-medium text-gray-700">
-            Temperature
-          </label>
-          <input
-            type="range"
-            min="0"
-            max="2"
-            step="0.1"
-            value={config.temperature}
-            onChange={(e) =>
-              updateConfig({ temperature: parseFloat(e.target.value) })
-            }
-            className="w-full"
-          />
-          <span>{config.temperature.toFixed(1)}</span>
-        </div>
-        <div>
-          <label className="block text-sm font-medium text-gray-700">
-            Top P
-          </label>
-          <input
-            type="range"
-            min="0"
-            max="1"
-            step="0.05"
-            value={config.top_p}
-            onChange={(e) =>
-              updateConfig({ top_p: parseFloat(e.target.value) })
-            }
-            className="w-full"
-          />
-          <span>{config.top_p.toFixed(2)}</span>
-        </div>
-        {/* Add more controls for frequency_penalty and presence_penalty */}
+    <div className="p-4 border rounded-md">
+      <h1 className="text-lg font-semibold mb-4">Model Controls</h1>
+
+      {/* Temperature Slider */}
+      <div className="mb-4">
+        <label
+          htmlFor="temperature-slider"
+          className="block text-sm font-medium mb-1"
+        >
+          Temperature
+        </label>
+        <input
+          id="temperature-slider"
+          type="range"
+          min={0}
+          max={2}
+          step={0.1}
+          value={config.temperature}
+          onChange={(e) =>
+            updateConfig({ temperature: parseFloat(e.target.value) })
+          }
+          className="w-full"
+        />
+        <span className="block text-sm text-gray-600 mt-1">
+          {config.temperature}
+        </span>
+      </div>
+
+      {/* Top P Slider */}
+      <div>
+        <label
+          htmlFor="top-p-slider"
+          className="block text-sm font-medium mb-1"
+        >
+          Top P
+        </label>
+        <input
+          id="top-p-slider"
+          type="range"
+          min={0}
+          max={1}
+          step={0.01}
+          value={config.top_p}
+          onChange={(e) => updateConfig({ top_p: parseFloat(e.target.value) })}
+          className="w-full"
+        />
+        <span className="block text-sm text-gray-600 mt-1">{config.top_p}</span>
       </div>
     </div>
   );

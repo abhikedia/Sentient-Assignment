@@ -9,7 +9,7 @@ type ModelConfig = {
   presence_penalty: number;
 };
 
-type ModelContextType = {
+export type ModelContextType = {
   config: ModelConfig;
   updateConfig: (newConfig: Partial<ModelConfig>) => void;
 };
