@@ -2,19 +2,6 @@
 
 AI Playground is an interactive web application that allows users to engage with Google's Generative AI model. This project is built using Next.js, React, and the Google Generative AI SDK.
 
-## Table of Contents
-
-1. [Prerequisites](#prerequisites)
-2. [Installation](#installation)
-3. [Environment Setup](#environment-setup)
-   - [Obtaining Google Generative AI API Key](#obtaining-google-generative-ai-api-key)
-   - [Creating Local Environment File](#creating-local-environment-file)
-4. [Running the Application](#running-the-application)
-5. [Testing](#testing)
-6. [Project Structure](#project-structure)
-7. [Contributing](#contributing)
-8. [License](#license)
-
 ## Prerequisites
 
 Before you begin, ensure you have the following installed on your system:
@@ -25,5 +12,22 @@ Before you begin, ensure you have the following installed on your system:
 
 ## Installation
 
-1. Clone the repository:
+1. Clone the repository
+2. Run `npm install`
+3. Set up environment variables:
+    Create a `.env.local` file in the root directory of your project. Add the following line to the file:
+   ```
+   GOOGLE_GENERATIVE_AI_API_KEY=your_api_key_here
+   ```
+   Replace `your_api_key_here` with your actual Google Generative AI API key. If you don't have an API key yet, follow these steps to obtain one:
+
+   a. Go to the [Google AI Studio](https://makersuite.google.com/app/apikey) \
+   b. Sign in with your Google account \
+   c. Click on "Create API Key" \
+   d. Copy the generated API key \
+   e. Paste the API key into your `.env.local` file
+4. To start the application run: `npm run dev`
+5. Open your web browser and navigate to [http://localhost:3000](http://localhost:3000) to see the application running locally.
+6. (Optional) Run tests:
+To ensure everything is working correctly, you can run the test suite: `npm test`
 
