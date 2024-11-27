@@ -34,7 +34,7 @@ type StreamContextType = {
 
 export const StreamContext = createContext<StreamContextType | null>(null);
 
-export function StreamProvider({ children }: { children: ReactNode }) {
+export default function StreamProvider({ children }: { children: ReactNode }) {
   const [messages, setMessages] = useState<Message[]>([]);
   const [metrics, setMetrics] = useState<Metrics>({
     tokensPerSecond: 0,

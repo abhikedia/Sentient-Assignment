@@ -1,6 +1,13 @@
-import PlaygroundContent from "@/components/playground";
+"use client";
+
 import { ModelProvider } from "@/context/ModelContext";
-import { StreamProvider } from "@/context/StreamContext";
+import dynamic from "next/dynamic";
+const StreamProvider = dynamic(() => import("@/context/StreamContext"), {
+  ssr: false,
+});
+const PlaygroundContent = dynamic(() => import("@/components/playground"), {
+  ssr: false,
+});
 
 const Playground = () => {
   return (
